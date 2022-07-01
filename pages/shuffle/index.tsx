@@ -1,28 +1,29 @@
-import { useEffect } from "react";
-import useSuffleStore from "./store"
-import { uuid } from 'uuidv4'
+import { useSuffleStore, SuffleStore } from "./store"
+import { v4 as uuidv4 } from 'uuid'
 
 function ShuffleGame() {
-    const items = useSuffleStore((state: any) => state.items)
-    const newItem = useSuffleStore((state: any) => state.newItem)
+    // states
+    const items = useSuffleStore((state: SuffleStore) => state.items)
+    const newItem = useSuffleStore((state: SuffleStore) => state.newItem)
+    
+    // actions
+    const initNewItem = useSuffleStore((state: SuffleStore) => state.initNewItem)
+    const addItem = useSuffleStore((state: SuffleStore) => state.addItem)
+    const editNewItem = useSuffleStore((state:SuffleStore) => state.editNewItem)
+    const removeItem = useSuffleStore((state:SuffleStore) => state.removeItem)
+
     console.log(newItem);
     console.log(items);
-    const initNewItem = useSuffleStore((state: any) => state.initNewItem)
-    const addItem = useSuffleStore((state: any) => state.addItem)
-    const editNewItem = useSuffleStore((state:any) => state.editNewItem)
-    const removeItem = useSuffleStore((state:any) => state.removeItem)
 
     const addItemToList = () => {
+        if (!newItem.content) return
+
         addItem({
             ...newItem,
-            id: uuid()
+            id: uuidv4()
         })
         initNewItem()
     }
-
-    useEffect(() => {
-        initNewItem()
-    }, [])
 
     return (
         <div>
